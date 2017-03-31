@@ -6,9 +6,6 @@
 
 FROM debian:jessie
 
-RUN sed -i s#deb.debian.org#mirror1.ku.ac.th#g /etc/apt/sources.list \
-    && sed -i s#security.debian.org#mirror1.ku.ac.th/debian-security#g /etc/apt/sources.list
-
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
 		autoconf \

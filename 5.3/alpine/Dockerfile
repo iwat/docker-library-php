@@ -6,8 +6,6 @@
 
 FROM alpine:3.4
 
-RUN sed -i s/dl-cdn.alpinelinux.org/mirror.kku.ac.th/g /etc/apk/repositories
-
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
 		autoconf \
