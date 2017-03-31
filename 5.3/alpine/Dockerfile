@@ -6,6 +6,8 @@
 
 FROM alpine:3.4
 
+RUN sed -i s/dl-cdn.alpinelinux.org/mirror.kku.ac.th/g /etc/apk/repositories
+
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
 		autoconf \
@@ -48,9 +50,9 @@ ENV PHP_LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 
 ENV GPG_KEYS 0BD78B5F97500D450838F95DFE857D9A90D90EC1 6E4F6AB321FDC07F2C332E3AC2BF0BC433CFC8B3
 
-ENV PHP_VERSION 5.6.30
-ENV PHP_URL="http://museum.php.net/php5/php-5.3.3.tar.gz"
-ENV PHP_SHA256="a8bf9ce535fa4c3f7acd00ed92ca50be49e9710876649ef26369b0326985833c" PHP_MD5="5adf1a537895c2ec933fddd48e78d8a2"
+ENV PHP_VERSION 5.3.29
+ENV PHP_URL="http://museum.php.net/php5/php-5.3.29.tar.gz"
+ENV PHP_SHA256="57cf097de3d6c3152dda342f62b1b2e9c988f4cfe300ccfe3c11f3c207a0e317" PHP_MD5="ebfa96ea636b2a7ece71e78ad116a338"
 
 RUN set -xe; \
 	\
@@ -84,7 +86,6 @@ RUN set -xe; \
 	apk del .fetch-deps
 
 COPY docker-php-source /usr/local/bin/
-COPY libxml29_compat.patch /tmp
 
 RUN set -xe \
 	&& apk add --no-cache --virtual .build-deps \
@@ -100,7 +101,6 @@ RUN set -xe \
 		LDFLAGS="$PHP_LDFLAGS" \
 	&& docker-php-source extract \
 	&& cd /usr/src/php \
-    && patch -p0 < /tmp/libxml29_compat.patch \
 	&& ./configure \
 		--with-config-file-path="$PHP_INI_DIR" \
 		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
